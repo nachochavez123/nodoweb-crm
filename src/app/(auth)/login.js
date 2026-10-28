@@ -2,6 +2,9 @@ import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, S
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '../../context/AuthContext.js';
+import { signInAnonymously } from 'firebase/auth';
+import { auth } from '../../firebase.js';
+import { usersService } from '../../services/users.js';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -20,6 +23,22 @@ export default function LoginScreen() {
       router.replace('/(app)');
     } catch (e) {
       Alert.alert('Error', error || 'No se pudo iniciar sesión');
+    }
+  };
+
+  const handleQuickLogin = async () => {
+    try {
+      const result = await signInAnonymously(auth);
+      await usersService.upsertUser(result.user.uid, {
+        email: null,
+        nombre: 'Usuario Teléfono',
+        rol: 'Vendedor',
+        foto: null,
+        anonimo: true,
+      });
+      router.replace('/(app)');
+    } catch (e) {
+      Alert.alert('Error', 'No se pudo iniciar el modo rápido');
     }
   };
 
@@ -66,6 +85,10 @@ export default function LoginScreen() {
 
         <TouchableOpacity style={styles.secondaryButton} onPress={() => router.push('/(auth)/register')}>
           <Text style={styles.secondaryButtonText}>Crear cuenta nueva</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.quickButton} onPress={handleQuickLogin} disabled={loading}>
+          <Text style={styles.quickButtonText}>Usar sin cuenta (modo rápido - solo este teléfono)</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -173,6 +196,19 @@ const styles = {
   secondaryButtonText: {
     color: '#0ea5e9',
     fontSize: 14,
+    fontWeight: '600',
+  },
+  quickButton: {
+    alignItems: 'center',
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#64748b',
+    borderRadius: 10,
+    paddingVertical: 12,
+  },
+  quickButtonText: {
+    color: '#64748b',
+    fontSize: 13,
     fontWeight: '600',
   },
 };

@@ -40,6 +40,12 @@ export default function ProspectDetailScreen() {
     Linking.openURL(prospect.googleMaps || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(prospect.nombre + ' ' + prospect.direccion + ' Bahía Blanca')}`);
   };
 
+  const handleNavigate = () => {
+    const destino = encodeURIComponent(prospect.direccion + ', ' + prospect.zona + ', Bahía Blanca, Argentina');
+    const origen = 'mi+ubicación';
+    Linking.openURL(`https://www.google.com/maps/dir/${origen}/${destino}/`);
+  };
+
   const handleWeb = () => {
     if (prospect.sitioWeb) {
       Linking.openURL(prospect.sitioWeb.startsWith('http') ? prospect.sitioWeb : `https://${prospect.sitioWeb}`);
@@ -171,6 +177,10 @@ export default function ProspectDetailScreen() {
         <TouchableOpacity style={styles.actionButton} onPress={handleWeb}>
           <Text style={styles.actionIcon}>🌐</Text>
           <Text style={styles.actionLabel}>Abrir Web</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#0284c7' }]} onPress={handleNavigate}>
+          <Text style={styles.actionIcon}>🧭</Text>
+          <Text style={styles.actionLabel}>Llevarme</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={handleEmail}>
           <Text style={styles.actionIcon}>✉️</Text>
