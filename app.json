@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "NodoWeb CRM Bahía Blanca",
+    "slug": "nodoweb-crm-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nodoweb.crm"
+    },
+    "android": {
+      "package": "com.nodoweb.crm",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0f172a"
+      },
+      "permissions": [
+        "CALL_PHONE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permite a NodoWeb CRM subir fotos de prospectos."
+        }
+      ]
+    ]
+  }
+}
